@@ -8,7 +8,7 @@ public class TicTacToe implements ActionListener{// to implement an interface en
     JFrame frame=new JFrame();// main window of the application 
     JPanel title_panel=new JPanel(); //panel for the title text  
     JPanel button_panel=new JPanel(); //store all the button 
-    JLabel textfield=new JLabel();//label to display the current turn or winnter 
+    JLabel textfield=new JLabel();//label to display the current turn or winner
     JButton[] buttons=new JButton[9]; // array to hold 9 buttons 
     boolean player1_turn;// true if player 1 turn 
 
@@ -16,29 +16,29 @@ public class TicTacToe implements ActionListener{// to implement an interface en
     TicTacToe(){ // constructor 
         // setting up the frame 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // to close the app
-        frame.setSize(800,800); // frame size 
-        frame.getContentPane().setBackground(new Color(50,50,50));// lighter shed of black grey color 
-        frame.setLayout(new BorderLayout());// orgnize panels ?? does this create the mini boxes NO 
+        frame.setSize(700, 700); // frame size 
+        frame.getContentPane().setBackground(new Color( 127, 25, 23));
+        frame.setLayout(new BorderLayout());// orgnize panels 
         frame.setVisible(true);// make the frame visible 
 
         //set background color 
         // this is mainly for the text field 
-        textfield.setBackground(new Color(25,25,25));
-        textfield.setForeground(new Color(25,255,0));
+        textfield.setBackground(new Color( 25,25,25));
+        textfield.setForeground(new Color( 255, 204, 203));
         textfield.setFont(new Font("Ink Free",Font.BOLD,75));
         textfield.setHorizontalAlignment(JLabel.CENTER);
         textfield.setText("Tic Tac Toe");
         textfield.setOpaque(true);// alows background color to show 
 
-        //title panel layoung
-        title_panel.setLayout(new BorderLayout());// border kayound for the title panel 
-        title_panel.setBounds(0,0,800,100);// positon and size of the title panel 
+        //title panel layount
+        title_panel.setLayout(new BorderLayout());// border layount for the title panel 
+        title_panel.setBounds(0,0,700,50);// positon and size of the title panel 
 
         //button
-        button_panel.setLayout(new GridLayout(3,3));// makes the grid  HERE we create the grid 
-        button_panel.setBackground(new Color(150,150,150)); // changes the color 
+        button_panel.setLayout(new GridLayout(3,3));// HERE we create the grid 
+        button_panel.setBackground(new Color( 255, 204, 203)); // changes the color 
 
-        // there is 9 button for loop will take care of the button
+        // loop
         for (int i = 0; i< 9; i++) {
             buttons[i]=new JButton(); // create the button 
             button_panel.add(buttons[i]); // add it 
@@ -83,7 +83,7 @@ public class TicTacToe implements ActionListener{// to implement an interface en
     // game logic here starts 
     public void firstturn(){// to determine radomly which one start first 
         try{
-        Thread.sleep(2000); // it does not show up until after this amoutn of time 
+        Thread.sleep(2000); // it does not show up until after this amount of time 
         }catch(InterruptedException e){
             e.printStackTrace();
         }
