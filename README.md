@@ -7,9 +7,6 @@ This is an interactive Tic Tac Toe game built using Java. The game allows two pl
 - Two-player gameplay (Player 1 vs Player 2).
 - Play on a 3x3 grid.
 - Player X and Player O take alternate turns.
-- A Restart and Quit option/ Buttons by the end of the game 
-
-Things to improve work on: 
-- rounds where there is no winner
-- Playing with a computer
-- possible bug with some boxes can be used both ways and the x and o interchange their locations 
+- A Restart and Quit option/ Buttons by the end of the game
+- There is the option to play with another player
+- OR to play with the computer 
