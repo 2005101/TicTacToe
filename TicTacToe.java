@@ -11,6 +11,8 @@ public class TicTacToe implements ActionListener{// to implement an interface en
     JLabel textfield=new JLabel();//label to display the current turn or winner
     JButton[] buttons=new JButton[9]; // array to hold 9 buttons 
     boolean player1_turn;// true if player 1 turn 
+    JButton restartButton = new JButton("Restart");
+    JButton quitButton = new JButton("Quit");
 
 
     TicTacToe(){ // constructor 
@@ -38,6 +40,18 @@ public class TicTacToe implements ActionListener{// to implement an interface en
         button_panel.setLayout(new GridLayout(3,3));// HERE we create the grid 
         button_panel.setBackground(new Color( 255, 204, 203)); // changes the color 
 
+        //restart button
+        restartButton.setFont(new Font("MV Boli", Font.BOLD, 30));// font
+        restartButton.setFocusable(false);
+        restartButton.addActionListener(e -> restartGame());
+
+        //quit button
+    
+        quitButton.setFont(new Font("MV Boli", Font.BOLD, 30));
+        quitButton.setFocusable(false);
+        quitButton.addActionListener(e -> System.exit(0));
+    
+
         // loop
         for (int i = 0; i< 9; i++) {
             buttons[i]=new JButton(); // create the button 
@@ -51,7 +65,12 @@ public class TicTacToe implements ActionListener{// to implement an interface en
         frame.add(title_panel,BorderLayout.NORTH); // call out add and out the text up 
         frame.add(button_panel);
 
-        firstturn();// calls the method to decide randomly who plays first 
+        firstturn();// calls the method to decide randomly who plays first
+        // add the buttons of quit and restart to the frame 
+        frame.add(restartButton, BorderLayout.EAST);
+        frame.add(quitButton, BorderLayout.SOUTH);
+        restartButton.setVisible(false);
+        quitButton.setVisible(false); 
     } 
     @Override
     public void actionPerformed(ActionEvent e){// we need to use this method as we are using an action listener, it handles button clicks 
@@ -189,6 +208,7 @@ public class TicTacToe implements ActionListener{// to implement an interface en
             buttons[i].setEnabled(false);// disable all  buttons    
         }
         textfield.setText("x wins");// display the winner 
+        showEndGameOptions(); // Show restart and quit buttons
     }
     // same thing for oWins method 
     public void oWins(int a, int b, int c){
@@ -199,7 +219,26 @@ public class TicTacToe implements ActionListener{// to implement an interface en
             buttons[i].setEnabled(false);// enable buttons    
         }
         textfield.setText("o wins");
+        showEndGameOptions(); // Show restart and quit buttons
+    }
+    //method to show end of game options 
+    private void showEndGameOptions() {
+        restartButton.setVisible(true);
+        quitButton.setVisible(true);
+    }
+    
+    public void restartGame() {
+        // Reset all buttons
+        for (int i = 0; i < 9; i++) {
+            buttons[i].setText("");
+            buttons[i].setEnabled(true);
+            buttons[i].setBackground(new JButton().getBackground());
+        }
+        textfield.setText("Tic Tac Toe");
+        restartButton.setVisible(false);
+        quitButton.setVisible(false);
+        firstturn(); // start over 
     }
  
 
-}
+} 
