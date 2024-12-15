@@ -2,6 +2,43 @@ import java.util.*; //imports the package for random number generation
 import java.awt.*;// abstract window tooklkit for graphics: this is for.setBounds(x,y), setTitle setSize 
 import java.awt.event.*;//handling events like button clicks, mouse movement, keyboard press etc 
 import javax.swing.*;//swing compoenents for Graphic user interface /GUI) like JButton,JLabel, everthing with J 
+// main page 
+ class StartPage {
+    JFrame frame = new JFrame();
+    JPanel panel = new JPanel();
+    JButton playerVsPlayerButton = new JButton("Player vs Player"); //start page buttons 
+    JButton playerVsComputerButton = new JButton("Player vs Computer");
+
+    StartPage() {
+        frame.setTitle("Tic Tac Toe - Select Mode");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(700, 700);
+        frame.setLayout(new BorderLayout());
+
+        panel.setLayout(new GridLayout(2, 1)); 
+        panel.add(playerVsPlayerButton);
+        panel.add(playerVsComputerButton);
+
+        playerVsPlayerButton.setFont(new Font("Arial", Font.PLAIN, 40));
+        playerVsComputerButton.setFont(new Font("Arial", Font.PLAIN, 40));
+
+        playerVsPlayerButton.addActionListener(e -> openTicTacToe(false)); // Player vs Player // make the buttons interactive 
+        playerVsComputerButton.addActionListener(e -> openTicTacToe(true)); // Player vs Computer
+
+        frame.add(panel, BorderLayout.CENTER);
+        frame.setVisible(true);
+    }
+
+    public void openTicTacToe(boolean isSinglePlayer) {
+        frame.setVisible(false); // Hide the start page
+        new TicTacToe(isSinglePlayer); // Open the TicTacToe game
+    }
+
+    public static void main(String[] args) {
+        new StartPage(); // Create the start page
+    }
+}
+
 public class TicTacToe implements ActionListener{// to implement an interface enbaling it to respond to button clicks 
     // declare 
     Random random=new Random(); // help us choose random 
@@ -13,9 +50,14 @@ public class TicTacToe implements ActionListener{// to implement an interface en
     boolean player1_turn;// true if player 1 turn 
     JButton restartButton = new JButton("Restart");
     JButton quitButton = new JButton("Quit");
+    boolean isSinglePlayer;
+
+    
 
 
-    TicTacToe(){ // constructor 
+    TicTacToe(boolean isSinglePlayer){ // constructor 
+        this.isSinglePlayer=isSinglePlayer;
+   
         // setting up the frame 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // to close the app
         frame.setSize(700, 700); // frame size 
@@ -73,32 +115,37 @@ public class TicTacToe implements ActionListener{// to implement an interface en
         quitButton.setVisible(false); 
     } 
     @Override
-    public void actionPerformed(ActionEvent e){// we need to use this method as we are using an action listener, it handles button clicks 
+    public void actionPerformed(ActionEvent e) {
         for (int i = 0; i < 9; i++) {
-            if (e.getSource()==buttons[i]) { // check which button was clicked 
+            if (e.getSource() == buttons[i]) {
                 if (player1_turn) {
-                    if (buttons[i].getText()=="") {
-                        buttons[i].setForeground(new Color(255,0,0));
+                    if (buttons[i].getText().equals("")) {
+                        buttons[i].setForeground(new Color(255, 0, 0));
                         buttons[i].setText("x");
-                        player1_turn=false;// switch to player 2 
-                        textfield.setText("o turn");// update the lable 
+                        player1_turn = false;
+                        textfield.setText("o turn");
+                        check();
+                        // computer moves in that mode
+                        if (isSinglePlayer) {
+                            if (!player1_turn) {
+                                computerMove();
+                            }
+                        }
+                    }
+                } else {
+                    //otherwise player vs player mode 
+                    if (buttons[i].getText().equals("")) {
+                        buttons[i].setForeground(new Color(0, 0, 255));
+                        buttons[i].setText("o");
+                        player1_turn = true;
+                        textfield.setText("x turn");
                         check();
                     }
-                }else {          
-                    if (buttons[i].getText()=="") 
-                    buttons[i].setForeground(new Color(0,0,255));
-                    buttons[i].setText("o");
-                    player1_turn=true;
-                    textfield.setText("x turn");
-                    check();
-                    
                 }
-                
             }
-            
         }
-
     }
+
     // game logic here starts 
     public void firstturn(){// to determine radomly which one start first 
         try{
@@ -114,6 +161,20 @@ public class TicTacToe implements ActionListener{// to implement an interface en
             player1_turn=false;
             textfield.setText("o turn");
         }
+    }
+
+    public void computerMove() {
+        // Randomly choose an empty cell
+
+        int move;
+        do {
+            move = random.nextInt(9);
+        } while (!buttons[move].getText().equals(""));
+        buttons[move].setForeground(new Color(0, 0, 255));
+        buttons[move].setText("o");
+        player1_turn = true;
+        textfield.setText("Your turn");
+        check();
     }
 
     public void check(){ // check who wins 
@@ -198,7 +259,20 @@ public class TicTacToe implements ActionListener{// to implement an interface en
         (buttons[4].getText()=="o")&&
         (buttons[6].getText()=="o")) {
         oWins(2, 4, 6);
-    }
+    } else {
+        // Check for a draw
+        boolean draw = true;
+        for (JButton button : buttons) {
+            if (button.getText().isEmpty()) {
+                draw = false; // If any button is empty, it's not a draw
+                break;
+            }
+        }
+        if (draw) {
+            textfield.setText("It's a Draw!");
+            showEndGameOptions();
+        }
+    } 
     }
     public void xWins(int a, int b, int c){
         buttons[a].setBackground(Color.GREEN);// showcase the winning line 
